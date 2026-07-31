@@ -1,0 +1,45 @@
+import { api } from "../api/financeApi";
+
+export async function getGoals() {
+
+    const { data } = await api.get("/goals");
+
+    return data;
+
+}
+
+export async function getGoalsProgress() {
+
+    const { data } = await api.get("/goals/progress");
+
+    return data;
+
+}
+
+export async function createGoal(goal) {
+
+    const { data } = await api.post(
+        "/goals",
+        goal
+    );
+
+    return data;
+
+}
+
+export async function updateGoal(id, goal) {
+
+    const { data } = await api.put(
+        `/goals/${id}`,
+        goal
+    );
+
+    return data;
+
+}
+
+export async function removeGoal(id) {
+
+    return api.delete(`/goals/${id}`);
+
+}
