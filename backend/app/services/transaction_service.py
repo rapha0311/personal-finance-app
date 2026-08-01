@@ -66,10 +66,18 @@ def list_transactions(
     category_id: int = None,
     start_date=None,
     end_date=None,
+    search: str = None,
 ):
 
     return get_transactions(
-        db, skip, limit, transaction_type, category_id, start_date, end_date
+        db,
+        skip,
+        limit,
+        transaction_type,
+        category_id,
+        start_date,
+        end_date,
+        search,
     )
 
 
