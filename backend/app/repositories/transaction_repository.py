@@ -154,6 +154,24 @@ def get_total_expenses_by_category(db: Session, category_id: int):
     return total or 0
 
 
+def get_top_expenses(db: Session, limit: int = 5):
+
+    return (
+        db.query(
+            Transaction.id,
+            Transaction.title,
+            Transaction.amount,
+            Transaction.transaction_date,
+            Category.name.label("category"),
+        )
+        .join(Category, Transaction.category_id == Category.id)
+        .filter(Transaction.transaction_type == "expense")
+        .order_by(Transaction.amount.desc())
+        .limit(limit)
+        .all()
+    )
+
+
 def update_transaction(
     db: Session,
     transaction: Transaction,

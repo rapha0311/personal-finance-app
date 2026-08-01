@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/financeApi";
+import { getNetWorth } from "../services/dashboardService";
 
 export function useDashboard() {
 
@@ -18,6 +19,8 @@ export function useDashboard() {
     const [period, setPeriod] = useState("all");
 
     const [alerts, setAlerts] = useState([]);
+
+    const [netWorth, setNetWorth] = useState([]);
 
     const [loading, setLoading] = useState(false);
 
@@ -69,6 +72,24 @@ export function useDashboard() {
     );
 
     setComparison(response.data);
+
+}
+
+    async function loadNetWorth() {
+
+    try {
+
+        const data = await getNetWorth();
+
+        console.log("API NET WORTH:", data);
+
+        setNetWorth(data);
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
 
 }
 
@@ -163,6 +184,9 @@ export function useDashboard() {
         console.log("6 - Comparison");
         await loadComparison();
 
+        console.log("7 - NetWorth");
+        await loadNetWorth()
+
         console.log("Dashboard carregado!");
 
     } catch (error) {
@@ -195,13 +219,15 @@ export function useDashboard() {
 
         alerts,
 
-        comparison,
+        comparison,        
 
         period,
 
         setPeriod,
 
-        loading
+        loading,
+
+        netWorth
 
     };
 
