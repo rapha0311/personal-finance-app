@@ -8,3 +8,13 @@ export async function getNetWorth() {
     return response.data;
 
 }
+
+export async function getTopExpenses() {
+
+    const response = await api.get(
+        "/analytics/top-expenses"
+    );
+
+    return response.data;
+
+}
