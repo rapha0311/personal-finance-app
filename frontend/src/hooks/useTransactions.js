@@ -11,13 +11,27 @@ export function useTransactions() {
 
   const [error, setError] = useState(null);
 
+  const [filters, setFilters] = useState({
+    search: "",
+    transaction_type: "",
+    category_id: "",
+    start_date: "",
+    end_date: ""
+});
+
   async function loadTransactions() {
 
     setLoading(true);
 
     try {
 
-      const data = await getTransactions();
+      const activeFilters = Object.fromEntries(
+    Object.entries(filters).filter(
+        ([, value]) => value !== "" && value !== null
+    )
+);
+
+const data = await getTransactions(activeFilters);
 
       setTransactions(data);
 
@@ -44,10 +58,8 @@ export function useTransactions() {
   }
 
   useEffect(() => {
-
     loadTransactions();
-
-  }, []);
+}, [filters]);
 
   return {
 
@@ -57,7 +69,11 @@ export function useTransactions() {
 
     error,
 
-    loadTransactions    
+    loadTransactions,
+    
+    filters,
+
+    setFilters
 
   };
 
