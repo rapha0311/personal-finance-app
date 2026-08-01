@@ -42,6 +42,7 @@ def get_transactions(
     category_id: int = None,
     start_date=None,
     end_date=None,
+    search: str = None,
 ):
 
     query = db.query(
@@ -58,6 +59,9 @@ def get_transactions(
 
     if category_id:
         query = query.filter(Transaction.category_id == category_id)
+
+    if search:
+        query = query.filter(Transaction.title.ilike(f"%{search}%"))
 
     if start_date:
         query = query.filter(Transaction.transaction_date >= start_date)
