@@ -14,6 +14,7 @@ import IncomeExpenseChart from "../components/dashboard/IncomeExpenseChart";
 import DashboardFilters from "../components/dashboard/DashboardFilters";
 import AlertsPanel from "../components/dashboard/AlertsPanel";
 import NetWorthChart from "../components/dashboard/NetWorthChart";
+import TopExpensesCard from "../components/dashboard/TopExpensesCard";
 
 import {
   BarChart,
@@ -39,7 +40,8 @@ function Dashboard() {
     period,
     setPeriod,
     loading,
-    netWorth
+    netWorth,
+    topExpenses
 } = useDashboard();
 
 console.log("NETWORTH STATE:", netWorth); 
@@ -163,6 +165,14 @@ if (loading) {
     formatCurrency={formatCurrency}
 
 />
+
+<div className="mt-8">
+
+    <TopExpensesCard
+        expenses={topExpenses}
+    />
+
+</div>
 
 <NetWorthChart
     data={netWorth}
