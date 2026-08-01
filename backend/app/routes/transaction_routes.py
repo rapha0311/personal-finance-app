@@ -20,6 +20,7 @@ from app.services.transaction_service import (
     get_monthly_comparison,
     get_executive_summary,
     get_top_categories,
+    get_top_expenses_service,
 )
 
 from app.services.goal_service import get_financial_alerts
@@ -134,3 +135,9 @@ def executive_summary_route(db: Session = Depends(get_db)):
 def top_categories_route(db: Session = Depends(get_db)):
 
     return get_top_categories(db)
+
+
+@router.get("/analytics/top-expenses")
+def top_expenses_route(db: Session = Depends(get_db)):
+
+    return get_top_expenses_service(db)
