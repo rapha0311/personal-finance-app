@@ -1,9 +1,13 @@
 import { api } from "../api/financeApi";
 
-export async function getTransactions() {
+export async function getTransactions(filters = {}) {
 
-    const response =
-        await api.get("/transactions");
+    const response = await api.get(
+        "/transactions",
+        {
+            params: filters
+        }
+    );
 
     return response.data;
 
