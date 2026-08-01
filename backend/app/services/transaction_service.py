@@ -12,6 +12,7 @@ from app.repositories.transaction_repository import (
     get_expenses_by_category,
     get_monthly_report,
     get_top_expenses,
+    get_average_daily_expense,
 )
 
 from app.repositories.category_repository import get_category_by_id
@@ -299,3 +300,20 @@ def get_top_expenses_service(db: Session):
         )
 
     return result
+
+
+def get_dashboard_kpis(db: Session):
+
+    summary = get_summary(db)
+
+    categories = get_category_expenses(db)
+
+    biggest_category = max(categories, key=lambda x: x["total"]) if categories else None
+
+    average_daily = get_average_daily_expense(db)
+
+    return {
+        "current_balance": summary["balance"],
+        "average_daily_expense": average_daily,
+        "biggest_category": biggest_category,
+    }

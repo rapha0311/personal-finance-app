@@ -21,6 +21,7 @@ from app.services.transaction_service import (
     get_executive_summary,
     get_top_categories,
     get_top_expenses_service,
+    get_dashboard_kpis,
 )
 
 from app.services.goal_service import get_financial_alerts
@@ -149,3 +150,9 @@ def top_categories_route(db: Session = Depends(get_db)):
 def top_expenses_route(db: Session = Depends(get_db)):
 
     return get_top_expenses_service(db)
+
+
+@router.get("/dashboard/kpis")
+def dashboard_kpis_route(db: Session = Depends(get_db)):
+
+    return get_dashboard_kpis(db)

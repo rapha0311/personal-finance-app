@@ -251,3 +251,22 @@ def get_monthly_report(db: Session):
         )
         .all()
     )
+
+
+def get_average_daily_expense(db: Session):
+
+    total = (
+        db.query(func.sum(Transaction.amount))
+        .filter(Transaction.transaction_type == "expense")
+        .scalar()
+        or 0
+    )
+
+    days = (
+        db.query(func.count(func.distinct(Transaction.transaction_date)))
+        .filter(Transaction.transaction_type == "expense")
+        .scalar()
+        or 1
+    )
+
+    return total / days
