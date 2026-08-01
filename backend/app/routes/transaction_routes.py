@@ -53,11 +53,19 @@ def get_transactions_route(
     category_id: int = None,
     start_date: date = None,
     end_date: date = None,
+    search: str = None,
     db: Session = Depends(get_db),
 ):
 
     return list_transactions(
-        db, skip, limit, transaction_type, category_id, start_date, end_date
+        db,
+        skip,
+        limit,
+        transaction_type,
+        category_id,
+        start_date,
+        end_date,
+        search,
     )
 
 
