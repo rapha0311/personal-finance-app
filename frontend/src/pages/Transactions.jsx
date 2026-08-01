@@ -3,6 +3,7 @@ import { useTransactions } from "../hooks/useTransactions";
 import { useTransactionForm } from "../hooks/useTransactionForm";
 import TransactionForm from "../components/transactions/TransactionForm";
 import TransactionTable from "../components/transactions/TransactionTable";
+import TransactionFilters from "../components/transactions/TransactionFilters";
 
 function Transactions() {
 
@@ -10,7 +11,9 @@ function Transactions() {
     transactions,
     loading,
     error,
-    loadTransactions
+    loadTransactions,
+    filters,
+    setFilters
 } = useTransactions();
 
     const {
@@ -31,6 +34,16 @@ function Transactions() {
             <h1 className="text-4xl font-bold mb-8">
                 Transações
             </h1>
+
+            <TransactionFilters
+
+                filters={filters}
+
+                setFilters={setFilters}
+
+                categories={categories}
+
+            />
 
             <TransactionForm
 
