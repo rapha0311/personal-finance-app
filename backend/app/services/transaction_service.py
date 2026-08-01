@@ -11,6 +11,7 @@ from app.repositories.transaction_repository import (
     update_transaction,
     get_expenses_by_category,
     get_monthly_report,
+    get_top_expenses,
 )
 
 from app.repositories.category_repository import get_category_by_id
@@ -269,3 +270,24 @@ def get_top_categories(db: Session):
         key=lambda x: x["total"],
         reverse=True,
     )[:5]
+
+
+def get_top_expenses_service(db: Session):
+
+    expenses = get_top_expenses(db)
+
+    result = []
+
+    for expense in expenses:
+
+        result.append(
+            {
+                "id": expense.id,
+                "title": expense.title,
+                "amount": float(expense.amount),
+                "transaction_date": expense.transaction_date,
+                "category": expense.category,
+            }
+        )
+
+    return result
