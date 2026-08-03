@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   getTransactions
 } from "../services/transactionService";
+import { useDebounce } from "./useDebounce";
 
 export function useTransactions() {
 
@@ -28,6 +29,8 @@ export function useTransactions() {
     end_date: ""
 });
 
+const debouncedSearch = useDebounce(filters.search);
+
   async function loadTransactions() {
 
     setLoading(true);
@@ -35,7 +38,7 @@ export function useTransactions() {
     try {
 
       const activeFilters = Object.fromEntries(
-    Object.entries(filters).filter(
+    Object.entries({filters, search: debouncedSearch}).filter(
         ([, value]) =>
             value !== "" &&
             value !== null &&
@@ -80,11 +83,26 @@ setPagination({
   }
 
   useEffect(() => {
-    loadTransactions();
-}, [filters]);
 
-console.log("HOOK transactions:", transactions);
-console.log("É array?", Array.isArray(transactions));
+    loadTransactions();
+
+}, [
+
+    debouncedSearch,
+
+    filters.transaction_type,
+
+    filters.category_id,
+
+    filters.start_date,
+
+    filters.end_date,
+
+    filters.page,
+
+    filters.page_size
+
+]);
 
   return {
 
