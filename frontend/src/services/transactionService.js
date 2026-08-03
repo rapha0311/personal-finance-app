@@ -2,6 +2,9 @@ import { api } from "../api/financeApi";
 
 export async function getTransactions(filters = {}) {
 
+    console.log(filters);
+    console.trace();
+
     const response = await api.get(
         "/transactions",
         {

@@ -31,6 +31,10 @@ export function useTransactions() {
 
 const debouncedSearch = useDebounce(filters.search);
 
+const [sortField, setSortField] = useState("transaction_date");
+
+const [sortOrder, setSortOrder] = useState("desc");
+
   async function loadTransactions() {
 
     setLoading(true);
@@ -38,7 +42,10 @@ const debouncedSearch = useDebounce(filters.search);
     try {
 
       const activeFilters = Object.fromEntries(
-    Object.entries({filters, search: debouncedSearch}).filter(
+    Object.entries({
+        ...filters,
+        search: debouncedSearch
+    }).filter(
         ([, value]) =>
             value !== "" &&
             value !== null &&
@@ -46,10 +53,9 @@ const debouncedSearch = useDebounce(filters.search);
     )
 );
 
-const data = await getTransactions(activeFilters);
+console.log("Filtros enviados:", activeFilters);
 
-console.log("API RESPONSE COMPLETA:", data);
-console.log("JSON:", JSON.stringify(data, null, 2));
+const data = await getTransactions(activeFilters);
 
 setTransactions(data.transactions);
 
@@ -118,7 +124,15 @@ setPagination({
     
     filters,
 
-    setFilters
+    setFilters,
+
+    sortField,
+
+    setSortField,
+
+    sortOrder,
+
+    setSortOrder,
 
   };
 

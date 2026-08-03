@@ -22,6 +22,8 @@ function TransactionPagination({
 
     function goToPage(page) {
 
+        console.log("Página clicada:", page);
+
         if (
             page < 1 ||
             page > pagination.total_pages

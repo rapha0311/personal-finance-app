@@ -59,6 +59,7 @@ function Transactions() {
             />
 
             <TransactionTable
+
                 transactions={transactions}
                 categories={categories}
                 onEdit={editTransaction}
