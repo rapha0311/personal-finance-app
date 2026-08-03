@@ -4,11 +4,13 @@ import { useTransactionForm } from "../hooks/useTransactionForm";
 import TransactionForm from "../components/transactions/TransactionForm";
 import TransactionTable from "../components/transactions/TransactionTable";
 import TransactionFilters from "../components/transactions/TransactionFilters";
+import TransactionPagination from "../components/transactions/TransactionPagination";
 
 function Transactions() {
 
     const {
     transactions,
+    pagination,
     loading,
     error,
     loadTransactions,
@@ -61,6 +63,12 @@ function Transactions() {
                 categories={categories}
                 onEdit={editTransaction}
                 onDelete={deleteTransaction}
+            />
+
+            <TransactionPagination
+                pagination={pagination}
+                filters={filters}
+                setFilters={setFilters}
             />
 
         </Layout>

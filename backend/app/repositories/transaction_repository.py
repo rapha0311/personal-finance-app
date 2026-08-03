@@ -36,8 +36,8 @@ def create_transaction(
 
 def get_transactions(
     db: Session,
-    skip: int = 0,
-    limit: int = 20,
+    page: int = 1,
+    page_size: int = 10,
     transaction_type: str = None,
     category_id: int = None,
     start_date=None,
@@ -71,12 +71,11 @@ def get_transactions(
 
     query = query.order_by(Transaction.transaction_date.desc())
 
-    rows = query.offset(skip)
+    offset = (page - 1) * page_size
 
-    if limit is not None:
-        rows = rows.limit(limit)
+    total = query.count()
 
-    rows = rows.all()
+    rows = query.offset(offset).limit(page_size).all()
 
     result = []
 
@@ -91,7 +90,13 @@ def get_transactions(
 
         result.append(item)
 
-    return result
+    return {
+        "items": result,
+        "page": page,
+        "page_size": page_size,
+        "total": total,
+        "total_pages": ((total + page_size - 1) // page_size),
+    }
 
 
 def get_transaction_by_id(db: Session, transaction_id: int):

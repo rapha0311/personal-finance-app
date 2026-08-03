@@ -48,8 +48,8 @@ def create_transaction_route(
 
 @router.get("/transactions")
 def get_transactions_route(
-    skip: int = 0,
-    limit: int = None,
+    page: int = 1,
+    page_size: int = 10,
     transaction_type: str = None,
     category_id: int = None,
     start_date: date = None,
@@ -60,8 +60,8 @@ def get_transactions_route(
 
     return list_transactions(
         db,
-        skip,
-        limit,
+        page,
+        page_size,
         transaction_type,
         category_id,
         start_date,

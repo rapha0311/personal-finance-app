@@ -60,9 +60,9 @@ def create_new_transaction(
 
 
 def list_transactions(
-    db: Session,
-    skip: int,
-    limit: int,
+    db,
+    page,
+    page_size,
     transaction_type: str = None,
     category_id: int = None,
     start_date=None,
@@ -72,8 +72,8 @@ def list_transactions(
 
     return get_transactions(
         db,
-        skip,
-        limit,
+        page,
+        page_size,
         transaction_type,
         category_id,
         start_date,

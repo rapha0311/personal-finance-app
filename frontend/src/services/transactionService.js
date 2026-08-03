@@ -9,7 +9,15 @@ export async function getTransactions(filters = {}) {
         }
     );
 
-    return response.data;
+    return {
+        transactions: response.data.items,
+        pagination: {
+            page: response.data.page,
+            pageSize: response.data.page_size,
+            total: response.data.total,
+            totalPages: response.data.total_pages
+        }
+    };
 
 }
 

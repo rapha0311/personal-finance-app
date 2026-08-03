@@ -36,6 +36,9 @@ function TransactionTable({
     );
 
 }, [categories]);
+
+        console.log("TABLE:", transactions);
+        console.log("ARRAY?", Array.isArray(transactions));
      
 
     return (
@@ -79,10 +82,9 @@ function TransactionTable({
                 </thead>
 
                 <tbody>
+                    
 
-                    {
-
-                        transactions?.map(transaction => (
+                    {transactions?.map(transaction => (
 
                             <tr
                                 key={transaction.id}
