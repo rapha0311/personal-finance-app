@@ -24,6 +24,14 @@ function TransactionPagination({
 
     }
 
+    const start =
+    (pagination.page - 1) * pagination.page_size + 1;
+
+    const end = Math.min(
+        pagination.page * pagination.page_size,
+        pagination.total
+    );
+
     return (
 
         <div className="flex items-center justify-between mt-6">
@@ -35,11 +43,21 @@ function TransactionPagination({
                 ← Anterior
             </ThemeButton>
 
-            <span className="font-medium">
+            <div className="text-center">
 
-                Página {pagination.page} de {pagination.total_pages}
+    <p className="font-medium">
 
-            </span>
+        Página {pagination.page} de {pagination.total_pages}
+
+    </p>
+
+    <p className="text-sm text-gray-500">
+
+        Mostrando {start}–{end} de {pagination.total} registros
+
+    </p>
+
+</div>
 
             <ThemeButton
                 onClick={() => goToPage(pagination.page + 1)}
