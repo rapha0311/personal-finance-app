@@ -15,6 +15,7 @@ from app.repositories.transaction_repository import (
     get_average_daily_expense,
     get_average_daily_expense,
     get_total_transactions,
+    get_latest_transactions,
 )
 
 from app.repositories.category_repository import get_category_by_id
@@ -322,3 +323,25 @@ def get_dashboard_kpis(db: Session):
         "biggest_category": biggest_category,
         "total_transactions": total_transactions,
     }
+
+
+def get_latest_transactions_service(db: Session):
+
+    transactions = get_latest_transactions(db)
+
+    result = []
+
+    for item in transactions:
+
+        result.append(
+            {
+                "id": item.id,
+                "title": item.title,
+                "amount": float(item.amount),
+                "transaction_type": item.transaction_type,
+                "transaction_date": item.transaction_date,
+                "category": item.category,
+            }
+        )
+
+    return result

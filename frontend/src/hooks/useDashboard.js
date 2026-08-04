@@ -187,35 +187,29 @@ async function loadTopExpenses() {
 
     try {
 
-        console.log("1 - Summary");
-        await loadSummary(startDate, endDate);
+        await Promise.all([
 
-        console.log("2 - Categories");
-        await loadCategoryExpenses(startDate, endDate);
+            loadSummary(startDate, endDate),
 
-        console.log("3 - Goals");
-        await loadGoals();
+            loadCategoryExpenses(startDate, endDate),
 
-        console.log("4 - Monthly");
-        await loadMonthlyReport();
+            loadGoals(),
 
-        console.log("5 - Alerts");
-        await loadAlerts();
+            loadMonthlyReport(),
 
-        console.log("6 - Comparison");
-        await loadComparison();
+            loadAlerts(),
 
-        console.log("7 - NetWorth");
-        await loadNetWorth()
+            loadComparison(),
 
-        console.log("8 - Top Expenses");
-        await loadTopExpenses();
+            loadNetWorth(),
 
-        console.log("Dashboard carregado!");
+            loadTopExpenses()
+
+        ]);
 
     } catch (error) {
 
-        console.error("ERRO:", error);
+        console.error(error);
 
     } finally {
 

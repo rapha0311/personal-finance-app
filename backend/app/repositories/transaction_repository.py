@@ -281,3 +281,21 @@ def get_average_daily_expense(db: Session):
 def get_total_transactions(db: Session):
 
     return db.query(Transaction).count()
+
+
+def get_latest_transactions(db: Session, limit: int = 5):
+
+    return (
+        db.query(
+            Transaction.id,
+            Transaction.title,
+            Transaction.amount,
+            Transaction.transaction_type,
+            Transaction.transaction_date,
+            Category.name.label("category"),
+        )
+        .join(Category, Transaction.category_id == Category.id)
+        .order_by(Transaction.transaction_date.desc())
+        .limit(limit)
+        .all()
+    )

@@ -89,14 +89,7 @@ async function exportExcel() {
 
 }
 
-if (loading) {
-
-  console.log("SUMMARY:", summary);
-  console.log("CATEGORY:", categoryExpenses);
-  console.log("MONTHLY:", monthlyReport);
-  console.log("ALERTS:", alerts);
-  console.log("COMPARISON:", comparison);
-  console.log("NET WORTH:", netWorth);
+if (loading) {  
 
     return (
 
