@@ -276,3 +276,8 @@ def get_average_daily_expense(db: Session):
     )
 
     return total / days
+
+
+def get_total_transactions(db: Session):
+
+    return db.query(Transaction).count()

@@ -13,6 +13,8 @@ from app.repositories.transaction_repository import (
     get_monthly_report,
     get_top_expenses,
     get_average_daily_expense,
+    get_average_daily_expense,
+    get_total_transactions,
 )
 
 from app.repositories.category_repository import get_category_by_id
@@ -312,8 +314,11 @@ def get_dashboard_kpis(db: Session):
 
     average_daily = get_average_daily_expense(db)
 
+    total_transactions = get_total_transactions(db)
+
     return {
         "current_balance": summary["balance"],
         "average_daily_expense": average_daily,
         "biggest_category": biggest_category,
+        "total_transactions": total_transactions,
     }

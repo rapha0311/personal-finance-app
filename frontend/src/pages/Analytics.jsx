@@ -45,6 +45,11 @@ function Analytics() {
   const [topCategories, setTopCategories] =
     useState([]);
 
+  const pieData = topCategories.map((item) => ({
+    name: item.category,
+    value: item.total,
+}));
+
   useEffect(() => {
 
     async function loadData() {
@@ -262,19 +267,9 @@ setTopCategories(
 
       </div>
 
-      <ThemeCard
-  className="
-    p-6
-  "
->
-
-  <h2
-    className="
-      text-2xl
-      font-bold
-      mb-6
-    "
-  >
+      {/* Evolução Financeira */}
+<ThemeCard className="p-6 mt-8">
+  <h2 className="text-2xl font-bold mb-6">
     Evolução Financeira
   </h2>
 
@@ -282,45 +277,28 @@ setTopCategories(
     width="100%"
     height={400}
   >
-
-    <LineChart
-      data={monthlyData}
-    >
-
-    <CartesianGrid
+    <LineChart data={monthlyData}>
+      <CartesianGrid
         strokeDasharray="3 3"
-        stroke={
-            darkMode
-            ? "#475569"
-            : "#e5e7eb"
-        }
-    />
+        stroke={darkMode ? "#475569" : "#e5e7eb"}
+      />
 
       <XAxis
-  stroke={
-    darkMode
-      ? "#e2e8f0"
-      : "#334155"
-  }
-/>
+        dataKey="month"
+        stroke={darkMode ? "#e2e8f0" : "#334155"}
+      />
 
-<YAxis
-  stroke={
-    darkMode
-      ? "#e2e8f0"
-      : "#334155"
-  }
-/>
+      <YAxis
+        stroke={darkMode ? "#e2e8f0" : "#334155"}
+      />
 
       <Tooltip />
 
       <Legend
-  wrapperStyle={{
-    color: darkMode
-      ? "#e2e8f0"
-      : "#334155"
-  }}
-/>
+        wrapperStyle={{
+          color: darkMode ? "#e2e8f0" : "#334155"
+        }}
+      />
 
       <Line
         type="monotone"
@@ -345,24 +323,13 @@ setTopCategories(
         stroke="#3b82f6"
         strokeWidth={3}
       />
-
     </LineChart>
-
   </ResponsiveContainer>
+</ThemeCard>
 
-  <ThemeCard
-  className="
-    p-6
-  "
->
-
-  <h2
-    className="
-      text-2xl
-      font-bold
-      mb-6
-    "
-  >
+{/* Top Categorias */}
+<ThemeCard className="p-6 mt-8">
+  <h2 className="text-2xl font-bold mb-6">
     Top 5 Categorias
   </h2>
 
@@ -370,70 +337,44 @@ setTopCategories(
     width="100%"
     height={400}
   >
-
     <BarChart
       data={topCategories}
       layout="vertical"
     >
-
       <CartesianGrid
-  stroke={
-    darkMode
-      ? "#475569"
-      : "#e5e7eb"
-  }
-/>
+        stroke={darkMode ? "#475569" : "#e5e7eb"}
+      />
 
-<XAxis
-  type="number"
-  stroke={
-    darkMode
-      ? "#e2e8f0"
-      : "#334155"
-  }
-/>
+      <XAxis
+        type="number"
+        stroke={darkMode ? "#e2e8f0" : "#334155"}
+      />
 
-<YAxis
-  type="category"
-  dataKey="category"
-  width={120}
-  stroke={
-    darkMode
-      ? "#e2e8f0"
-      : "#334155"
-  }
-/>
+      <YAxis
+        type="category"
+        dataKey="category"
+        width={140}
+        stroke={darkMode ? "#e2e8f0" : "#334155"}
+      />
 
       <Tooltip />
 
       <Bar
-  dataKey="total"
-  name="Total"
-  fill="#22c55e"
->
-  <LabelList
-    dataKey="total"
-    position="top"
-  />
-</Bar>
-
+        dataKey="total"
+        fill="#22c55e"
+      >
+        <LabelList
+          dataKey="total"
+          position="right"
+        />
+      </Bar>
     </BarChart>
+  </ResponsiveContainer>
+</ThemeCard>
 
-  </ResponsiveContainer>    
-
-  <ThemeCard
-  className="
-    p-6
-  "
->
-
-  <h2
-    className="
-      text-2xl
-      font-bold
-      mb-6
-    "
-  >
+{/* Distribuição dos Gastos */}
+<ThemeCard className="p-6 mt-8">
+  <h2 className="text-2xl font-bold mb-6">
     Distribuição dos Gastos
   </h2>
 
@@ -441,7 +382,6 @@ setTopCategories(
     width="100%"
     height={400}
   >
-
     <PieChart>
 
       <Pie
@@ -452,48 +392,24 @@ setTopCategories(
         innerRadius={70}
         label
       >
-
-        {
-          topCategories.map(
-            (
-              entry,
-              index
-            ) => (
-
-              <Cell
-                key={index}
-                fill={
-                  COLORS[
-                    index %
-                    COLORS.length
-                  ]
-                }
-              />
-
-            )
-          )
-        }
-
+        {pieData.map((entry, index) => (
+          <Cell
+            key={index}
+            fill={COLORS[index % COLORS.length]}
+          />
+        ))}
       </Pie>
 
       <Tooltip />
 
       <Legend
-  wrapperStyle={{
-    color: darkMode
-      ? "#e2e8f0"
-      : "#334155"
-  }}
-/>
+        wrapperStyle={{
+          color: darkMode ? "#e2e8f0" : "#334155"
+        }}
+      />
 
     </PieChart>
-
   </ResponsiveContainer>
-
-</ThemeCard>
-
-</ThemeCard>
-
 </ThemeCard>
 
     </Layout>
