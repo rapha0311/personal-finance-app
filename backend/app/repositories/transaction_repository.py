@@ -71,6 +71,7 @@ def get_transactions(
 
     query = query.order_by(Transaction.transaction_date.desc())
 
+    # ESTE BLOCO FICA FORA DO IF/ELSE
     offset = (page - 1) * page_size
 
     total = query.count()
@@ -95,7 +96,7 @@ def get_transactions(
         "page": page,
         "page_size": page_size,
         "total": total,
-        "total_pages": ((total + page_size - 1) // page_size),
+        "total_pages": (total + page_size - 1) // page_size,
     }
 
 

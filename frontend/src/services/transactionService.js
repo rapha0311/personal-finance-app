@@ -5,12 +5,20 @@ export async function getTransactions(filters = {}) {
     console.log(filters);
     console.trace();
 
-    const response = await api.get(
-        "/transactions",
-        {
-            params: filters
-        }
-    );
+    const response = await api.get("/transactions", {
+    params: filters,
+});
+
+console.log("BACKEND:", response.data);
+console.log("SERVICE:", {
+    transactions: response.data.items,
+    pagination: {
+        page: response.data.page,
+        pageSize: response.data.page_size,
+        total: response.data.total,
+        totalPages: response.data.total_pages
+    }
+});
 
     return {
         transactions: response.data.items,

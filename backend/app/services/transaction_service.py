@@ -63,11 +63,11 @@ def list_transactions(
     db,
     page,
     page_size,
-    transaction_type: str = None,
-    category_id: int = None,
+    transaction_type=None,
+    category_id=None,
     start_date=None,
     end_date=None,
-    search: str = None,
+    search=None,
 ):
 
     return get_transactions(

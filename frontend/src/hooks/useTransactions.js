@@ -31,10 +31,6 @@ export function useTransactions() {
 
 const debouncedSearch = useDebounce(filters.search);
 
-const [sortField, setSortField] = useState("transaction_date");
-
-const [sortOrder, setSortOrder] = useState("desc");
-
   async function loadTransactions() {
 
     setLoading(true);
@@ -53,9 +49,23 @@ const [sortOrder, setSortOrder] = useState("desc");
     )
 );
 
+Object.keys(activeFilters).forEach((key) => {
+
+    if (
+        activeFilters[key] === "" ||
+        activeFilters[key] === null ||
+        activeFilters[key] === undefined
+    ) {
+        delete activeFilters[key];
+    }
+
+});
+
 console.log("Filtros enviados:", activeFilters);
 
 const data = await getTransactions(activeFilters);
+
+console.log("SERVICE RETORNOU:", data);
 
 setTransactions(data.transactions);
 
@@ -121,19 +131,11 @@ setPagination({
     error,
 
     loadTransactions,
-    
+
     filters,
 
-    setFilters,
+    setFilters
 
-    sortField,
-
-    setSortField,
-
-    sortOrder,
-
-    setSortOrder,
-
-  };
+};
 
 }
