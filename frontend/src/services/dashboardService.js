@@ -18,3 +18,13 @@ export async function getTopExpenses() {
     return response.data;
 
 }
+
+export async function getLatestTransactions() {
+
+    const response = await api.get(
+        "/dashboard/latest-transactions"
+    );
+
+    return response.data;
+
+}

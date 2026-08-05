@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { api } from "../api/financeApi";
 import {
     getNetWorth,
-    getTopExpenses
+    getTopExpenses,
+    getLatestTransactions
 } from "../services/dashboardService";
 
 export function useDashboard() {
@@ -26,6 +27,8 @@ export function useDashboard() {
     const [netWorth, setNetWorth] = useState([]);
 
     const [topExpenses, setTopExpenses] = useState([]);
+
+    const [latestTransactions, setLatestTransactions] = useState([]);
 
     const [loading, setLoading] = useState(false);
 
@@ -176,6 +179,22 @@ async function loadTopExpenses() {
 
 }
 
+async function loadLatestTransactions() {
+
+    try {
+
+        const data = await getLatestTransactions();
+
+        setLatestTransactions(data);
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
     async function loadDashboard() {
 
     setLoading(true);
@@ -203,7 +222,9 @@ async function loadTopExpenses() {
 
             loadNetWorth(),
 
-            loadTopExpenses()
+            loadTopExpenses(),
+
+            loadLatestTransactions(),
 
         ]);
 
@@ -247,8 +268,11 @@ async function loadTopExpenses() {
 
         netWorth,
 
-        topExpenses
+        topExpenses,
+
+        latestTransactions,
 
     };
 
 }
+

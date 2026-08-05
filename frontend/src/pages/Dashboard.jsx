@@ -15,6 +15,7 @@ import DashboardFilters from "../components/dashboard/DashboardFilters";
 import AlertsPanel from "../components/dashboard/AlertsPanel";
 import NetWorthChart from "../components/dashboard/NetWorthChart";
 import TopExpensesCard from "../components/dashboard/TopExpensesCard";
+import LatestTransactionsCard from "../components/dashboard/LatestTransactionsCard";
 
 import {
   BarChart,
@@ -41,7 +42,8 @@ function Dashboard() {
     setPeriod,
     loading,
     netWorth,
-    topExpenses
+    topExpenses,
+    latestTransactions
 } = useDashboard();
 
 console.log("NETWORTH STATE:", netWorth); 
@@ -163,6 +165,14 @@ if (loading) {
 
     <TopExpensesCard
         expenses={topExpenses}
+    />
+
+</div>
+
+<div className="mt-8">
+
+    <LatestTransactionsCard
+        transactions={latestTransactions}
     />
 
 </div>
