@@ -212,6 +212,8 @@ async function loadKPIs() {
 
         const data = await getDashboardKPIs();
 
+        console.log("KPIS API:", data);
+
         setKpis(data);
 
     } catch (error) {

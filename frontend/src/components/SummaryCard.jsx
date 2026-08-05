@@ -7,7 +7,8 @@ function SummaryCard({
   color,
   change = null,
   changeType = "percentage",
-  icon = "📊"
+  icon = "📊",
+  isNumber = false
 }) {
   
   const formattedChange = 
@@ -65,7 +66,11 @@ function SummaryCard({
           ${color}
         `}
       >
-        {formatCurrency(value)}
+        {
+          isNumber
+            ? value
+            : formatCurrency(value)
+        }
       </p>
 
       {

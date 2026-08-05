@@ -16,6 +16,7 @@ import AlertsPanel from "../components/dashboard/AlertsPanel";
 import NetWorthChart from "../components/dashboard/NetWorthChart";
 import TopExpensesCard from "../components/dashboard/TopExpensesCard";
 import LatestTransactionsCard from "../components/dashboard/LatestTransactionsCard";
+import DashboardKPIs from "../components/dashboard/DashboardKPIs";
 
 import {
   BarChart,
@@ -46,8 +47,6 @@ function Dashboard() {
     latestTransactions,
     kpis
 } = useDashboard();
-
-console.log("NETWORTH STATE:", netWorth); 
 
 async function exportExcel() {
 
@@ -130,6 +129,10 @@ if (loading) {
     comparison={comparison}    
 
 />
+
+    <DashboardKPIs
+        kpis={kpis}
+    />
 
     <div
   className="

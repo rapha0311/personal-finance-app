@@ -19,6 +19,17 @@ from app.repositories.transaction_repository import (
     get_previous_month_summary,
 )
 
+from app.repositories.bill_repository import (
+    get_pending_bills,
+    get_pending_amount,
+)
+
+from app.repositories.goal_repository import (
+    get_active_goals,
+)
+
+from app.services.dashboard_service import get_forecast
+
 from app.repositories.category_repository import get_category_by_id
 from app.services.goal_transaction_service import (
     link_transaction_to_goal,
@@ -133,12 +144,12 @@ def get_summary(
         end_date,
     )
 
-    balance = float(income) - float(expenses)
+    current_balance = float(income) - float(expenses)
 
     return {
         "income": income,
         "expenses": expenses,
-        "balance": balance,
+        "current_balance": current_balance,
     }
 
 
@@ -271,7 +282,7 @@ def get_executive_summary(db: Session):
     return {
         "income": summary["income"],
         "expenses": summary["expenses"],
-        "balance": summary["balance"],
+        "balance": summary["current_balance"],
         "biggest_category": biggest_category,
     }
 
@@ -326,7 +337,7 @@ def get_dashboard_kpis(db: Session):
         return round(((current_value - previous_value) / previous_value) * 100, 2)
 
     return {
-        "current_balance": current["balance"],
+        "current_balance": current["current_balance"],
         "income": current["income"],
         "expenses": current["expenses"],
         "income_variation": percent(
@@ -337,6 +348,9 @@ def get_dashboard_kpis(db: Session):
         ),
         "average_daily_expense": average_daily,
         "biggest_category": biggest_category,
+        "pending_bills": get_pending_bills(db),
+        "pending_amount": get_pending_amount(db),
+        "active_goals": get_active_goals(db),
     }
 
 
