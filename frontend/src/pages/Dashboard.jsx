@@ -17,6 +17,8 @@ import NetWorthChart from "../components/dashboard/NetWorthChart";
 import TopExpensesCard from "../components/dashboard/TopExpensesCard";
 import LatestTransactionsCard from "../components/dashboard/LatestTransactionsCard";
 import DashboardKPIs from "../components/dashboard/DashboardKPIs";
+import DashboardInsights from "../components/dashboard/DashboardInsights";
+import { generateInsights } from "../services/dashboardInsights";
 
 import {
   BarChart,
@@ -47,6 +49,8 @@ function Dashboard() {
     latestTransactions,
     kpis
 } = useDashboard();
+
+const insights = generateInsights(summary, kpis);
 
 async function exportExcel() {
 
@@ -133,6 +137,10 @@ if (loading) {
     <DashboardKPIs
         kpis={kpis}
     />
+
+    <DashboardInsights
+    insights={insights}
+/>
 
     <div
   className="
