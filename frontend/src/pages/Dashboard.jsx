@@ -127,9 +127,7 @@ if (loading) {
 
     summary={summary}
 
-    comparison={comparison}
-
-    kpis={kpis}
+    comparison={comparison}    
 
 />
 

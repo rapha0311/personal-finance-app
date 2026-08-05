@@ -152,7 +152,15 @@ async function loadTopExpenses() {
         }
     );
 
-    setSummary(response.data);
+    setSummary({
+
+        income: response.data.monthly_income,
+
+        expenses: response.data.monthly_expenses,
+
+        current_balance: response.data.current_balance
+
+    });
 
 }
 

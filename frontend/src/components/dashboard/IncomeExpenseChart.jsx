@@ -23,12 +23,12 @@ function IncomeExpenseChart({
 
         {
             name: "Receitas",
-            value: summary.monthly_income
+            value: summary.income
         },
 
         {
             name: "Despesas",
-            value: summary.monthly_expenses
+            value: summary.expenses
         }
 
     ], [summary]);

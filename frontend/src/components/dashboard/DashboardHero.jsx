@@ -35,14 +35,14 @@ function DashboardHero({
             <div>
               <p className="text-blue-200">Receita Total</p>
               <p className="font-bold text-xl">
-                {formatCurrency(summary.monthly_income)}
+                {formatCurrency(summary.income)}
               </p>
             </div>
 
             <div>
               <p className="text-blue-200">Despesas Totais</p>
               <p className="font-bold text-xl">
-                {formatCurrency(summary.monthly_expenses)}
+                {formatCurrency(summary.expenses)}
               </p>
             </div>
 

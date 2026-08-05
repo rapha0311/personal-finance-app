@@ -4,45 +4,38 @@ function DashboardSummary({
 
     summary,
 
-    comparison,
-
-    kpis
+    comparison,    
 
 }) {
 
     const cards = [
 
-        {
-            title: "Receitas",
-            value: summary.monthly_income,
-            color: "text-green-600",
-            change:
-                kpis?.income_variation ??
-                comparison.income_change,
-            icon: "💰"
-        },
+    {
+        title: "Receitas",
+        value: summary.income,
+        color: "text-green-600",
+        change: comparison.income_change,
+        icon: "💰"
+    },
 
-        {
-            title: "Despesas",
-            value: summary.monthly_expenses,
-            color: "text-red-600",
-            change:
-                kpis?.expense_variation ??
-                comparison.expense_change,
-            icon: "💸"
-        },
+    {
+        title: "Despesas",
+        value: summary.expenses,
+        color: "text-red-600",
+        change: comparison.expense_change,
+        icon: "💸"
+    },
 
-        {
-            title: "Saldo",
-            value: summary.current_balance,
-            color: "text-blue-600",
-            change:
-                comparison.balance_change,
-            changeType: "currency",
-            icon: "🏦"
-        }
+    {
+        title: "Saldo",
+        value: summary.current_balance,
+        color: "text-blue-600",
+        change: comparison.balance_change,
+        changeType: "currency",
+        icon: "🏦"
+    }
 
-    ];
+];
 
     return (
 
