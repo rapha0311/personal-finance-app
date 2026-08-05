@@ -28,3 +28,13 @@ export async function getLatestTransactions() {
     return response.data;
 
 }
+
+export async function getDashboardKPIs() {
+
+    const response = await api.get(
+        "/dashboard/kpis"
+    );
+
+    return response.data;
+
+}

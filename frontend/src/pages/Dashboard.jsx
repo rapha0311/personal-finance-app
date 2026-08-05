@@ -43,7 +43,8 @@ function Dashboard() {
     loading,
     netWorth,
     topExpenses,
-    latestTransactions
+    latestTransactions,
+    kpis
 } = useDashboard();
 
 console.log("NETWORTH STATE:", netWorth); 
@@ -123,8 +124,13 @@ if (loading) {
 />
 
     <DashboardSummary
+
     summary={summary}
+
     comparison={comparison}
+
+    kpis={kpis}
+
 />
 
     <div

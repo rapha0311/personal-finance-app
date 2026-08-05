@@ -16,6 +16,7 @@ from app.repositories.transaction_repository import (
     get_average_daily_expense,
     get_total_transactions,
     get_latest_transactions,
+    get_previous_month_summary,
 )
 
 from app.repositories.category_repository import get_category_by_id
@@ -307,7 +308,9 @@ def get_top_expenses_service(db: Session):
 
 def get_dashboard_kpis(db: Session):
 
-    summary = get_summary(db)
+    current = get_summary(db)
+
+    previous = get_previous_month_summary(db)
 
     categories = get_category_expenses(db)
 
@@ -315,13 +318,25 @@ def get_dashboard_kpis(db: Session):
 
     average_daily = get_average_daily_expense(db)
 
-    total_transactions = get_total_transactions(db)
+    def percent(current_value, previous_value):
+
+        if previous_value == 0:
+            return 0
+
+        return round(((current_value - previous_value) / previous_value) * 100, 2)
 
     return {
-        "current_balance": summary["balance"],
+        "current_balance": current["balance"],
+        "income": current["income"],
+        "expenses": current["expenses"],
+        "income_variation": percent(
+            current["income"], previous["income"] if previous else 0
+        ),
+        "expense_variation": percent(
+            current["expenses"], previous["expense"] if previous else 0
+        ),
         "average_daily_expense": average_daily,
         "biggest_category": biggest_category,
-        "total_transactions": total_transactions,
     }
 
 

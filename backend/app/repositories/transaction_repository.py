@@ -299,3 +299,18 @@ def get_latest_transactions(db: Session, limit: int = 5):
         .limit(limit)
         .all()
     )
+
+
+def get_previous_month_summary(db: Session):
+
+    report = get_monthly_report(db)
+
+    if len(report) < 2:
+        return None
+
+    previous = report[-2]
+
+    return {
+        "income": float(previous.income or 0),
+        "expense": float(previous.expense or 0),
+    }

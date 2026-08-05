@@ -3,7 +3,8 @@ import { api } from "../api/financeApi";
 import {
     getNetWorth,
     getTopExpenses,
-    getLatestTransactions
+    getLatestTransactions,
+    getDashboardKPIs
 } from "../services/dashboardService";
 
 export function useDashboard() {
@@ -29,6 +30,8 @@ export function useDashboard() {
     const [topExpenses, setTopExpenses] = useState([]);
 
     const [latestTransactions, setLatestTransactions] = useState([]);
+
+    const [kpis, setKpis] = useState(null);
 
     const [loading, setLoading] = useState(false);
 
@@ -195,6 +198,22 @@ async function loadLatestTransactions() {
 
 }
 
+async function loadKPIs() {
+
+    try {
+
+        const data = await getDashboardKPIs();
+
+        setKpis(data);
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
     async function loadDashboard() {
 
     setLoading(true);
@@ -225,6 +244,8 @@ async function loadLatestTransactions() {
             loadTopExpenses(),
 
             loadLatestTransactions(),
+
+            loadKPIs(),
 
         ]);
 
@@ -271,6 +292,8 @@ async function loadLatestTransactions() {
         topExpenses,
 
         latestTransactions,
+
+        kpis,
 
     };
 
