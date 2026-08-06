@@ -133,27 +133,47 @@ def get_financial_alerts(db: Session):
 
         progress = goal["progress"]
 
-        if progress >= 100:
-
-            alerts.append(
-                {"type": "success", "message": f'Meta "{goal["title"]}" concluída.'}
-            )
-
-        elif progress >= 80:
+        if goal["completed"]:
 
             alerts.append(
                 {
-                    "type": "warning",
-                    "message": f'Meta "{goal["title"]}" está com {progress:.0f}% concluída.',
+                    "type": "success",
+                    "icon": "🏆",
+                    "title": "Meta concluída",
+                    "message": f'A meta "{goal["title"]}" foi concluída.',
                 }
             )
 
-        else:
+        elif progress >= 90:
+
+            alerts.append(
+                {
+                    "type": "success",
+                    "icon": "🎯",
+                    "title": "Meta quase concluída",
+                    "message": f'A meta "{goal["title"]}" já atingiu {progress:.0f}% do objetivo.',
+                }
+            )
+
+        elif progress >= 60:
 
             alerts.append(
                 {
                     "type": "info",
-                    "message": f'Você precisa guardar {goal["monthly_needed"]:.2f}/mês para concluir "{goal["title"]}".',
+                    "icon": "📈",
+                    "title": "Bom progresso",
+                    "message": f'A meta "{goal["title"]}" está com {progress:.0f}% concluída.',
+                }
+            )
+
+        elif progress < 20:
+
+            alerts.append(
+                {
+                    "type": "warning",
+                    "icon": "⚠️",
+                    "title": "Meta parada",
+                    "message": f'A meta "{goal["title"]}" ainda possui apenas {progress:.0f}% de progresso.',
                 }
             )
 

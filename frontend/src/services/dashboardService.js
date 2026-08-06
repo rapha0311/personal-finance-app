@@ -38,3 +38,13 @@ export async function getDashboardKPIs() {
     return response.data;
 
 }
+
+export async function getFinancialInsights() {
+
+    const response = await api.get(
+        "/dashboard/insights"
+    );
+
+    return response.data;
+
+}

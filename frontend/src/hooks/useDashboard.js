@@ -31,7 +31,9 @@ export function useDashboard() {
 
     const [latestTransactions, setLatestTransactions] = useState([]);
 
-    const [kpis, setKpis] = useState(null);
+    const [kpis, setKpis] = useState(null);  
+    
+    const [insights, setInsights] = useState([]);
 
     const [loading, setLoading] = useState(false);
 
@@ -253,6 +255,24 @@ async function loadKPIs() {
 
 }
 
+async function loadInsights() {
+
+    try {
+
+        const response =
+            await api.get("/dashboard/insights");
+
+        setInsights(response.data);
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
     async function loadDashboard() {
 
     setLoading(true);
@@ -284,7 +304,9 @@ async function loadKPIs() {
 
             loadLatestTransactions(),
 
-            loadKPIs(),
+            loadKPIs(),   
+            
+            loadInsights(),
 
         ]);
 
@@ -333,6 +355,8 @@ async function loadKPIs() {
         latestTransactions,
 
         kpis,
+
+        insights,
 
     };
 
