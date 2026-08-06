@@ -35,6 +35,8 @@ export function useDashboard() {
 
     const [loading, setLoading] = useState(false);
 
+    const [goalProgress, setGoalProgress] = useState(null);
+
     const [comparison, setComparison] = useState({
         income_change: 0,
         expense_change: 0,
@@ -139,6 +141,33 @@ async function loadTopExpenses() {
     setGoals(response.data);
 
 }
+
+    async function loadGoalProgress() {
+
+        try {
+
+            const response =
+                await api.get("/goals/progress");
+
+            if (response.data.length > 0) {
+
+                setGoalProgress(response.data[0]);
+
+            } else {
+
+                setGoalProgress(null);
+
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
+    }
+
+
 
     async function loadSummary(startDate, endDate) {
 

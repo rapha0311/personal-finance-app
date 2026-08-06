@@ -2,6 +2,7 @@ from app.services.goal_transaction_service import get_goal_progress
 
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from datetime import date
 
 from app.models.goal import Goal
 from app.utils.goal_calculator import calculate_goal_progress
@@ -37,34 +38,49 @@ def get_goals_progress(db: Session):
 
     goals = get_goals(db)
 
+    today = date.today()
+
     result = []
 
     for goal in goals:
 
-        current_amount = get_goal_progress(
-            db,
-            goal.id,
-        )
+        target = float(goal.target_amount or 0)
+        current = float(goal.current_amount or 0)
 
-        progress = calculate_goal_progress(
-            target_amount=goal.target_amount,
-            current_amount=current_amount,
-            target_date=goal.target_date,
-            completed=goal.completed,
-        )
+        progress = 0
+
+        if target > 0:
+            progress = round((current / target) * 100, 1)
+
+        remaining = max(target - current, 0)
+
+        monthly_needed = 0
+
+        estimated_finish = None
+
+        if goal.target_date:
+
+            months_remaining = (goal.target_date.year - today.year) * 12 + (
+                goal.target_date.month - today.month
+            )
+
+            months_remaining = max(months_remaining, 1)
+
+            monthly_needed = round(remaining / months_remaining, 2)
+
+            estimated_finish = goal.target_date.strftime("%m/%Y")
 
         result.append(
             {
                 "id": goal.id,
                 "title": goal.title,
-                "target_amount": goal.target_amount,
-                "current_amount": current_amount,
-                "remaining": progress["remaining"],
-                "percentage": progress["percentage"],
-                "target_date": goal.target_date,
-                "days_left": progress["days_left"],
+                "target_amount": target,
+                "current_amount": current,
+                "progress": progress,
+                "remaining": remaining,
+                "monthly_needed": monthly_needed,
+                "estimated_finish": estimated_finish,
                 "completed": goal.completed,
-                "status": progress["status"],
             }
         )
 
@@ -115,14 +131,30 @@ def get_financial_alerts(db: Session):
 
     for goal in goals:
 
-        if goal["status"] == "danger":
+        progress = goal["progress"]
 
-            alerts.append(f'A meta "{goal["title"]}" ultrapassou o valor planejado.')
-
-        elif goal["status"] == "warning":
+        if progress >= 100:
 
             alerts.append(
-                f'A meta "{goal["title"]}" já atingiu {goal["percentage"]:.0f}% do valor planejado.'
+                {"type": "success", "message": f'Meta "{goal["title"]}" concluída.'}
+            )
+
+        elif progress >= 80:
+
+            alerts.append(
+                {
+                    "type": "warning",
+                    "message": f'Meta "{goal["title"]}" está com {progress:.0f}% concluída.',
+                }
+            )
+
+        else:
+
+            alerts.append(
+                {
+                    "type": "info",
+                    "message": f'Você precisa guardar {goal["monthly_needed"]:.2f}/mês para concluir "{goal["title"]}".',
+                }
             )
 
     return alerts

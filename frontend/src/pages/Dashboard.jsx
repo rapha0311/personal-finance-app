@@ -53,6 +53,7 @@ function Dashboard() {
     netWorth,
     topExpenses,
     latestTransactions,
+    goalProgress,
     kpis
 } = useDashboard();
 
@@ -159,6 +160,19 @@ if (loading) {
           kpis={kpis}
       />
   </div>
+  <div className="mb-8">
+
+    {
+        goalProgress && (
+
+            <GoalProgressCard
+                goal={goalProgress}
+            />
+
+        )
+    }
+
+</div>
 
   <div className="mb-8">
       <DashboardInsights

@@ -3,10 +3,13 @@ import { formatCurrency } from "../../utils/Formatters";
 
 function GoalProgressCard({ goal }) {
 
-    const percentage = Math.min(
-        (goal.current_amount / goal.target_amount) * 100,
-        100
-    );
+    const percentage =
+    goal.target_amount > 0
+        ? Math.min(
+              (goal.current_amount / goal.target_amount) * 100,
+              100
+          )
+        : 0;
 
     return (
 
@@ -50,6 +53,34 @@ function GoalProgressCard({ goal }) {
                 </span>
 
             </div>
+
+            <div className="mt-4 text-sm space-y-1">
+
+    <p>
+
+        <strong>Faltam:</strong>{" "}
+
+        {formatCurrency(goal.remaining)}
+
+    </p>
+
+    <p>
+
+        <strong>Guardar/mês:</strong>{" "}
+
+        {formatCurrency(goal.monthly_needed)}
+
+    </p>
+
+    <p>
+
+        <strong>Previsão:</strong>{" "}
+
+        {goal.estimated_finish}
+
+    </p>
+
+</div>
 
         </ThemeCard>
 
