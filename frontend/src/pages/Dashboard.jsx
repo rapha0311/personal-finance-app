@@ -19,6 +19,12 @@ import LatestTransactionsCard from "../components/dashboard/LatestTransactionsCa
 import DashboardKPIs from "../components/dashboard/DashboardKPIs";
 import DashboardInsights from "../components/dashboard/DashboardInsights";
 import { generateInsights } from "../services/dashboardInsights";
+import FinancialScoreCard from "../components/dashboard/FinancialScoreCard";
+import {
+    calculateFinancialScore,
+    getFinancialLevel
+} from "../services/financialScore";
+import DashboardTopBar from "../components/dashboard/DashboardTopBar";
 
 import {
   BarChart,
@@ -49,6 +55,12 @@ function Dashboard() {
     latestTransactions,
     kpis
 } = useDashboard();
+
+const score = kpis
+    ? calculateFinancialScore(summary, kpis)
+    : 0;
+
+const level = getFinancialLevel(score);
 
 const insights = generateInsights(summary, kpis);
 
@@ -112,35 +124,47 @@ if (loading) {
   <Layout>
 
     <DashboardHero
-    summary={summary}
-    exportExcel={exportExcel}
-  />
+        summary={summary}
+    />  
 
-<AlertsPanel alerts={alerts} />
+    <DashboardTopBar
+    exportExcel={exportExcel}
+/>      
 
     <DashboardFilters
-
-    period={period}
-
-    setPeriod={setPeriod}
-
-/>
-
-    <DashboardSummary
-
-    summary={summary}
-
-    comparison={comparison}    
-
-/>
-
-    <DashboardKPIs
-        kpis={kpis}
+        period={period}
+        setPeriod={setPeriod}
     />
 
-    <DashboardInsights
-    insights={insights}
-/>
+  <div className="mb-8">
+      <FinancialScoreCard
+        score={score}
+        level={level}
+    />
+  </div>
+
+  <div className="mb-8">
+      <AlertsPanel alerts={alerts} /> 
+  </div>   
+
+  <div className="mb-8">
+      <DashboardSummary
+      summary={summary}
+      comparison={comparison}
+  />
+  </div>
+
+  <div className="mb-8">
+      <DashboardKPIs
+          kpis={kpis}
+      />
+  </div>
+
+  <div className="mb-8">
+      <DashboardInsights
+      insights={insights}
+  />
+  </div>
 
     <div
   className="
@@ -168,15 +192,17 @@ if (loading) {
 
 </div>
 
-<CategoryChart
+  <div className="mb-8">
+  <CategoryChart
 
-    categoryExpenses={categoryExpenses}
+      categoryExpenses={categoryExpenses}
 
-    formatCurrency={formatCurrency}
+      formatCurrency={formatCurrency}
 
-/>
+  />
+  </div>
 
-<div className="mt-8">
+<div className="mb-8">
 
     <TopExpensesCard
         expenses={topExpenses}
@@ -184,7 +210,7 @@ if (loading) {
 
 </div>
 
-<div className="mt-8">
+<div className="mb-8">
 
     <LatestTransactionsCard
         transactions={latestTransactions}
@@ -192,11 +218,15 @@ if (loading) {
 
 </div>
 
-<NetWorthChart
-    data={netWorth}
-/>
+<div className="mb-8">
+    <NetWorthChart
+        data={netWorth}
+    />
+</div>
 
-<GoalsPanel goals={goals} />
+<div className="mb-8">
+    <GoalsPanel goals={goals} />
+</div>
 
   </Layout>
 );

@@ -1,4 +1,3 @@
-import ThemeButton from "../ThemeButton";
 import { formatCurrency } from "../../utils/Formatters";
 
 function DashboardHero({
@@ -55,14 +54,7 @@ function DashboardHero({
 
           </div>
 
-        </div>
-
-        <ThemeButton
-          color="green"
-          onClick={exportExcel}
-        >
-          Exportar Excel
-        </ThemeButton>
+        </div>        
 
       </div>
 
