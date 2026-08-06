@@ -91,6 +91,74 @@ export function generateInsights(summary, kpis) {
 
     }
 
+    // Concentração de despesas
+
+if (
+
+    kpis.biggest_category &&
+
+    summary.expenses > 0 &&
+
+    (kpis.biggest_category.total / summary.expenses) >= 0.5
+
+) {
+
+    insights.push({
+
+        type: "warning",
+
+        icon: "📂",
+
+        title: "Gastos concentrados",
+
+        message: `Mais de 50% das despesas estão na categoria ${kpis.biggest_category.category}.`
+
+    });
+
+}
+
+// Nenhuma meta
+
+if (kpis.active_goals === 0) {
+
+    insights.push({
+
+        type: "info",
+
+        icon: "🎯",
+
+        title: "Crie uma meta",
+
+        message: "Definir metas ajuda a acompanhar sua evolução financeira."
+
+    });
+
+}
+
+// Previsão do próximo mês
+
+if (
+
+    kpis.forecast_next_month !== undefined &&
+
+    kpis.forecast_next_month < 0
+
+) {
+
+    insights.push({
+
+        type: "danger",
+
+        icon: "📉",
+
+        title: "Previsão negativa",
+
+        message: "Sua previsão financeira para o próximo mês indica saldo negativo."
+
+    });
+
+}
+
     return insights;
 
 }
