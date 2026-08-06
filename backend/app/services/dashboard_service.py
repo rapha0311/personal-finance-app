@@ -12,6 +12,8 @@ from app.repositories.goal_repository import (
     get_active_goals,
 )
 
+from app.services.goal_service import get_goals_progress
+
 from app.repositories.transaction_repository import (
     get_monthly_report,
     get_total_income,
@@ -196,3 +198,77 @@ def get_category_expenses(
         }
         for category, total in data
     ]
+
+
+def get_dashboard_insights(db):
+
+    insights = []
+
+    summary = get_dashboard_summary(db)
+
+    if summary["monthly_expenses"] > summary["monthly_income"]:
+
+        insights.append(
+            {
+                "type": "danger",
+                "icon": "🚨",
+                "title": "Despesas maiores que receitas",
+                "message": "Neste período suas despesas ultrapassaram suas receitas.",
+            }
+        )
+
+    elif summary["monthly_income"] > 0:
+
+        savings = summary["monthly_income"] - summary["monthly_expenses"]
+
+        percentage = (savings / summary["monthly_income"]) * 100
+
+        if percentage >= 20:
+
+            insights.append(
+                {
+                    "type": "success",
+                    "icon": "🎉",
+                    "title": "Excelente economia",
+                    "message": f"Você economizou {percentage:.0f}% da sua renda.",
+                }
+            )
+
+        elif percentage >= 10:
+
+            insights.append(
+                {
+                    "type": "info",
+                    "icon": "💡",
+                    "title": "Boa economia",
+                    "message": f"Você economizou {percentage:.0f}% da sua renda.",
+                }
+            )
+
+    goals = get_goals_progress(db)
+
+    for goal in goals:
+
+        if goal["completed"]:
+
+            insights.append(
+                {
+                    "type": "success",
+                    "icon": "🏆",
+                    "title": "Meta concluída",
+                    "message": f'A meta "{goal["title"]}" foi concluída.',
+                }
+            )
+
+        elif goal["progress"] >= 75:
+
+            insights.append(
+                {
+                    "type": "info",
+                    "icon": "🎯",
+                    "title": "Meta avançando",
+                    "message": f'A meta "{goal["title"]}" já atingiu {goal["progress"]:.0f}%.',
+                }
+            )
+
+    return insights

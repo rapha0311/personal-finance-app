@@ -8,6 +8,16 @@ from app.database.connection import get_db
 
 from app.schemas.transaction_schema import TransactionCreate, TransactionUpdate
 
+from app.services.dashboard_service import (
+    get_dashboard_summary,
+    get_dashboard_insights,
+)
+
+from app.schemas.responses.dashboard_response import (
+    DashboardSummaryResponse,
+    DashboardKPIsResponse,
+)
+
 from app.services.transaction_service import (
     create_new_transaction,
     list_transactions,
@@ -135,6 +145,23 @@ def alerts_route(db: Session = Depends(get_db)):
     return get_financial_alerts(db)
 
 
+@router.get(
+    "/dashboard/summary",
+    response_model=DashboardSummaryResponse,
+)
+def dashboard_summary_route(
+    start_date: date = None,
+    end_date: date = None,
+    db: Session = Depends(get_db),
+):
+
+    return get_dashboard_summary(
+        db,
+        start_date,
+        end_date,
+    )
+
+
 @router.get("/analytics/executive-summary")
 def executive_summary_route(db: Session = Depends(get_db)):
 
@@ -153,8 +180,13 @@ def top_expenses_route(db: Session = Depends(get_db)):
     return get_top_expenses_service(db)
 
 
-@router.get("/dashboard/kpis")
-def dashboard_kpis_route(db: Session = Depends(get_db)):
+@router.get(
+    "/dashboard/kpis",
+    response_model=DashboardKPIsResponse,
+)
+def dashboard_kpis_route(
+    db: Session = Depends(get_db),
+):
 
     return get_dashboard_kpis(db)
 
@@ -163,3 +195,11 @@ def dashboard_kpis_route(db: Session = Depends(get_db)):
 def latest_transactions_route(db: Session = Depends(get_db)):
 
     return get_latest_transactions_service(db)
+
+
+@router.get("/dashboard/insights")
+def dashboard_insights_route(
+    db: Session = Depends(get_db),
+):
+
+    return get_dashboard_insights(db)
