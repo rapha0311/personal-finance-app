@@ -1,11 +1,13 @@
-from app.services.goal_transaction_service import get_goal_progress
+from datetime import date
 
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-from datetime import date
 
 from app.models.goal import Goal
-from app.utils.goal_calculator import calculate_goal_progress
+
+from app.services.goal_transaction_service import (
+    get_goal_progress,
+)
 
 from app.repositories.goal_repository import (
     create_goal,
@@ -21,7 +23,6 @@ def create_new_goal(db: Session, data):
     goal = Goal(
         title=data.title,
         target_amount=data.target_amount,
-        current_amount=data.current_amount,
         target_date=data.target_date,
         category_id=data.category_id,
     )
@@ -54,9 +55,15 @@ def get_goals_progress(db: Session):
         progress = 0
 
         if target > 0:
-            progress = round((current / target) * 100, 1)
+            progress = round(
+                (current / target) * 100,
+                1,
+            )
 
-        remaining = max(target - current, 0)
+        remaining = max(
+            target - current,
+            0,
+        )
 
         monthly_needed = 0
 
@@ -68,9 +75,15 @@ def get_goals_progress(db: Session):
                 goal.target_date.month - today.month
             )
 
-            months_remaining = max(months_remaining, 1)
+            months_remaining = max(
+                months_remaining,
+                1,
+            )
 
-            monthly_needed = round(remaining / months_remaining, 2)
+            monthly_needed = round(
+                remaining / months_remaining,
+                2,
+            )
 
             estimated_finish = goal.target_date.strftime("%m/%Y")
 
@@ -93,7 +106,10 @@ def get_goals_progress(db: Session):
 
 def remove_goal(db: Session, goal_id: int):
 
-    goal = get_goal_by_id(db, goal_id)
+    goal = get_goal_by_id(
+        db,
+        goal_id,
+    )
 
     if not goal:
 
@@ -102,14 +118,24 @@ def remove_goal(db: Session, goal_id: int):
             detail="Meta não encontrada",
         )
 
-    delete_goal(db, goal)
+    delete_goal(
+        db,
+        goal,
+    )
 
     return {"message": "Meta removida"}
 
 
-def edit_goal(db: Session, goal_id: int, data):
+def edit_goal(
+    db: Session,
+    goal_id: int,
+    data,
+):
 
-    goal = get_goal_by_id(db, goal_id)
+    goal = get_goal_by_id(
+        db,
+        goal_id,
+    )
 
     if not goal:
 
@@ -120,11 +146,13 @@ def edit_goal(db: Session, goal_id: int, data):
 
     goal.title = data.title
     goal.target_amount = data.target_amount
-    goal.current_amount = data.current_amount
     goal.target_date = data.target_date
     goal.category_id = data.category_id
 
-    return update_goal(db, goal)
+    return update_goal(
+        db,
+        goal,
+    )
 
 
 def get_financial_alerts(db: Session):
@@ -144,7 +172,7 @@ def get_financial_alerts(db: Session):
                     "type": "success",
                     "icon": "🏆",
                     "title": "Meta concluída",
-                    "message": f'A meta "{goal["title"]}" foi concluída.',
+                    "message": (f'A meta "{goal["title"]}" ' "foi concluída."),
                 }
             )
 
@@ -155,7 +183,11 @@ def get_financial_alerts(db: Session):
                     "type": "success",
                     "icon": "🎯",
                     "title": "Meta quase concluída",
-                    "message": f'A meta "{goal["title"]}" já atingiu {progress:.0f}% do objetivo.',
+                    "message": (
+                        f'A meta "{goal["title"]}" '
+                        f"já atingiu {progress:.0f}% "
+                        "do objetivo."
+                    ),
                 }
             )
 
@@ -166,7 +198,11 @@ def get_financial_alerts(db: Session):
                     "type": "info",
                     "icon": "📈",
                     "title": "Bom progresso",
-                    "message": f'A meta "{goal["title"]}" está com {progress:.0f}% concluída.',
+                    "message": (
+                        f'A meta "{goal["title"]}" '
+                        f"está com {progress:.0f}% "
+                        "concluída."
+                    ),
                 }
             )
 
@@ -177,7 +213,11 @@ def get_financial_alerts(db: Session):
                     "type": "warning",
                     "icon": "⚠️",
                     "title": "Meta parada",
-                    "message": f'A meta "{goal["title"]}" ainda possui apenas {progress:.0f}% de progresso.',
+                    "message": (
+                        f'A meta "{goal["title"]}" '
+                        f"ainda possui apenas "
+                        f"{progress:.0f}% de progresso."
+                    ),
                 }
             )
 

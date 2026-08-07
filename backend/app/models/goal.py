@@ -23,8 +23,6 @@ class Goal(Base):
 
     target_amount = Column(Float, nullable=False)
 
-    current_amount = Column(Float, default=0)
-
     target_date = Column(Date)
 
     completed = Column(Boolean, default=False)

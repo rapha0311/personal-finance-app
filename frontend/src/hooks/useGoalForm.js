@@ -1,147 +1,162 @@
 import { useEffect, useState } from "react";
 
 import {
-
     createGoal,
-
     updateGoal,
-
     removeGoal
-
 } from "../services/goalService";
 
 import {
-
     getCategories
-
 } from "../services/categoryService";
+
 
 export function useGoalForm(loadGoals) {
 
     const [editingId, setEditingId] = useState(null);
 
-    const [categories, setCategories] = useState([]);    
+    const [categories, setCategories] = useState([]);
+
 
     const initialFormData = {
-    title: "",
-    target_amount: "",
-    current_amount: 0,
-    target_date: "",
-    category_id: ""
-};
+
+        title: "",
+
+        target_amount: "",
+
+        target_date: "",
+
+        category_id: ""
+
+    };
 
 
-const [formData, setFormData] = useState(initialFormData);
+    const [formData, setFormData] = useState(initialFormData);
+
 
     async function loadCategories() {
 
-        try{
+        try {
 
-    const data = await getCategories();
+            const data = await getCategories();
 
-    setCategories(data);
+            setCategories(data);
 
-}catch(error){
+        } catch (error) {
 
-    console.error(error);
+            console.error(error);
 
-}
+        }
 
     }
-    
+
 
     useEffect(() => {
 
-       loadCategories();
+        loadCategories();
 
     }, []);
 
-function clearForm(){
 
-            setEditingId(null);
+    function clearForm() {
 
-            setFormData(initialFormData);
+        setEditingId(null);
 
-}
+        setFormData(initialFormData);
+
+    }
+
 
     async function saveGoal() {
 
-        try{             
-        
-    const payload = {
-        title: formData.title,
-        target_amount: Number(formData.target_amount),
-        current_amount: Number(formData.current_amount),
-        target_date: formData.target_date || null,
-        category_id: Number(formData.category_id)
-};
-    
+        try {
 
-    if (editingId) {        
+            const payload = {
 
-        const response = await updateGoal(editingId, payload);        
+                title: formData.title,
 
-    } else {
+                target_amount: Number(formData.target_amount),
 
-        const response = await createGoal(payload);        
+                target_date: formData.target_date || null,
+
+                category_id: Number(formData.category_id)
+
+            };
+
+
+            if (editingId) {
+
+                await updateGoal(
+                    editingId,
+                    payload
+                );
+
+            } else {
+
+                await createGoal(
+                    payload
+                );
+
+            }
+
+
+            clearForm();
+
+            await loadGoals();
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
 
     }
-    clearForm();        
 
-        await loadGoals();
-
-    } catch (error) {
-
-        console.error(error);
-    }
-
-    }
 
     function editGoal(goal) {
 
-    setEditingId(goal.id);
+        setEditingId(goal.id);
 
-    setFormData({
+        setFormData({
 
-    title: goal.title,
+            title: goal.title,
 
-    target_amount: goal.target_amount,
+            target_amount: goal.target_amount,
 
-    current_amount: goal.current_amount,
+            target_date: goal.target_date ?? "",
 
-    target_date: goal.target_date ?? "",
+            category_id: goal.category_id ?? ""
 
-    category_id: goal.category_id ?? ""
+        });
 
-});
+    }
 
-}
 
     async function deleteGoal(id) {
 
-        try{
+        try {
 
-        if (
+            if (
 
-            !window.confirm(
+                !window.confirm(
+                    "Deseja realmente excluir esta meta?"
+                )
 
-                "Deseja realmente excluir esta meta?"
+            ) return;
 
-            )
 
-        ) return;
+            await removeGoal(id);
 
-        await removeGoal(id);
+            await loadGoals();
 
-        await loadGoals();
+        } catch (error) {
 
-    } catch (error) {
+            console.error(error);
 
-        console.error(error);
+        }
 
     }
 
-    }
 
     return {
 
