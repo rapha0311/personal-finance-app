@@ -45,7 +45,11 @@ def get_goals_progress(db: Session):
     for goal in goals:
 
         target = float(goal.target_amount or 0)
-        current = float(goal.current_amount or 0)
+
+        current = get_goal_progress(
+            db,
+            goal.id,
+        )
 
         progress = 0
 
